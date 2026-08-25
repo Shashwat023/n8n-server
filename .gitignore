@@ -1,0 +1,12 @@
+.claude/
+n8n_data/
+*.bak
+*.bak2
+*.zip
+
+.n8n_data/storage/
+
+# Personal resume attached to cold mails - keep the files/ dir (see files/README.md),
+# just don't publish the actual PDF.
+files/resume.pdf
+files/*.pdf
