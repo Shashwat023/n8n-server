@@ -1,0 +1,1861 @@
+{
+  "name": "Job Application Email Sequence (Multi-Tab Sheets + Gmail)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "id": "db2f8f85-5e50-44a9-b503-b02d3d1b194e",
+      "name": "Schedule Trigger (Every 30 min)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1616,
+        3792
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a01",
+              "name": "spreadsheet_id",
+              "value": "1r3cjviIrjwgsa1o_xRWxzrBmGKZfItOrYZOPKrmpCgY",
+              "type": "string"
+            },
+            {
+              "id": "a03",
+              "name": "tracker_tab",
+              "value": "Tracker",
+              "type": "string"
+            },
+            {
+              "id": "250c8d4a-6711-4b28-ae16-8364af2ae3b0",
+              "name": "settings_tab",
+              "value": "Settings",
+              "type": "string"
+            },
+            {
+              "id": "a04",
+              "name": "log_tab",
+              "value": "Log",
+              "type": "string"
+            },
+            {
+              "id": "a05",
+              "name": "excluded_tabs",
+              "value": "Settings,Tracker,Log,Invalid Contacts",
+              "type": "string"
+            },
+            {
+              "id": "a06",
+              "name": "timezone",
+              "value": "Asia/Kolkata",
+              "type": "string"
+            },
+            {
+              "id": "a07",
+              "name": "window_start_hour",
+              "value": 10,
+              "type": "number"
+            },
+            {
+              "id": "a08",
+              "name": "window_end_hour",
+              "value": 18,
+              "type": "number"
+            },
+            {
+              "id": "a09",
+              "name": "max_mails",
+              "value": 5,
+              "type": "number"
+            },
+            {
+              "id": "a10",
+              "name": "followup_gap_hours",
+              "value": "{\"1\": 2, \"2\": 1, \"3\": 1.5, \"4\": 3}",
+              "type": "string"
+            },
+            {
+              "id": "a11",
+              "name": "run_started_at",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "b01",
+              "name": "invalid_tab",
+              "value": "Invalid Contacts",
+              "type": "string"
+            },
+            {
+              "id": "b02",
+              "name": "calendar_id",
+              "value": "primary",
+              "type": "string"
+            },
+            {
+              "id": "b03",
+              "name": "resume_file_path",
+              "value": "/home/node/.n8n-files/resume.pdf",
+              "type": "string"
+            },
+            {
+              "id": "b04",
+              "name": "resume_file_name",
+              "value": "resume.pdf",
+              "type": "string"
+            },
+            {
+              "id": "b05",
+              "name": "sender_name",
+              "value": "Shashwat Verma",
+              "type": "string"
+            },
+            {
+              "id": "b06",
+              "name": "sender_headline",
+              "value": "Full-Stack Developer | AI/ML Developer | Generative AI & Agentic Workflows | AI Automations",
+              "type": "string"
+            },
+            {
+              "id": "b07",
+              "name": "sender_phone",
+              "value": "+918303545027",
+              "type": "string"
+            },
+            {
+              "id": "b08",
+              "name": "sender_portfolio",
+              "value": "https://www.linkedin.com/in/shashwat-verma2004/",
+              "type": "string"
+            },
+            {
+              "id": "b09",
+              "name": "interview_event_duration_min",
+              "value": 45,
+              "type": "number"
+            },
+            {
+              "id": "c01",
+              "name": "city_aliases",
+              "type": "string",
+              "value": "{\"bangalore\": [\"bengaluru\", \"blr\", \"bangalore urban\", \"whitefield\", \"koramangala\", \"electronic city\"], \"delhi\": [\"new delhi\", \"delhi ncr\", \"ncr\", \"noida\", \"gurgaon\", \"gurugram\", \"faridabad\", \"ghaziabad\"], \"mumbai\": [\"bombay\", \"navi mumbai\", \"thane\", \"andheri\", \"powai\"], \"hyderabad\": [\"hyd\", \"secunderabad\", \"cyberabad\", \"gachibowli\", \"hitech city\"], \"pune\": [\"puna\", \"pimpri\", \"chinchwad\", \"hinjewadi\"], \"chennai\": [\"madras\", \"omr\", \"guindy\"], \"remote\": [\"work from home\", \"wfh\", \"anywhere\", \"fully remote\"]}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b935bab0-0b29-46c3-999a-fe5d8c800b03",
+      "name": "Workflow Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1376,
+        3792
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Workflow Config').first().json.spreadsheet_id }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Workflow Config').first().json.settings_tab }}",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "8a511a64-b68a-47f0-ab1d-9b62c75040dd",
+      "name": "Read Master Switch (Settings!A2)",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -1136,
+        3792
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bXdlxFH87iXnOisU",
+          "name": "Google Sheets account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const cfg = $('Workflow Config').first().json;\nconst rows = $input.all().map(r => r.json || {});\n\nconst norm = k => String(k).toLowerCase().replace(/[^a-z0-9]/g, '');\n\nconst isTicked = v => {\n  if (typeof v === 'boolean') return v === true;\n  if (typeof v === 'number') return v === 1;\n  const s = String(v ?? '').trim().toLowerCase();\n  return ['true', 'yes', 'y', '1', 'x', 'on', 'checked', '✓', '✔', '☑'].includes(s);\n};\n\nlet sw = '';\nfor (const j of rows) {\n  const keys = Object.keys(j).filter(k => k !== 'row_number' && k !== 'error');\n  if (!keys.length) continue;\n  const preferred = keys.find(k => /master|switch|on.?off/i.test(k));\n  const v = String(j[preferred || keys[0]] ?? '').trim().toUpperCase();\n  if (v) { sw = v; break; }\n}\n\nconst selected = [];\nconst allCities = [];\nconst trace = [];\nlet includeUnknown = false;\n\nfor (const j of rows) {\n  const keys = Object.keys(j).filter(k => k !== 'row_number' && k !== 'error');\n  if (!keys.length) continue;\n\n  let city = '';\n  let enabled = null;\n  let enabledKeyUsed = null;\n\n  for (const k of keys) {\n    const nk = norm(k);\n    const val = j[k];\n\n    if (!city && (nk.includes('city') || nk.includes('location'))) {\n      city = String(val ?? '').trim();\n    }\n\n    if (\n      enabled === null &&\n      (nk.includes('enabled') || nk.includes('enable') || nk.includes('selected') ||\n       nk.includes('active') || nk.includes('apply') || nk.includes('tick') || nk.includes('include'))\n    ) {\n      enabled = isTicked(val);\n      enabledKeyUsed = k;\n    }\n  }\n\n  if (!city) continue;\n\n  if (norm(city) === 'includeunknowncity') {\n    includeUnknown = enabled === null ? false : enabled;\n    continue;\n  }\n\n  allCities.push(city);\n  trace.push({ city, enabledKeyUsed, enabled, rawValue: j[enabledKeyUsed], rawType: typeof j[enabledKeyUsed] });\n\n  if (enabled === true || enabled === null) {\n    selected.push(city);\n  }\n}\n\nconst parts = new Intl.DateTimeFormat('en-GB', {\n  timeZone: cfg.timezone, hour: '2-digit', minute: '2-digit', hour12: false,\n}).formatToParts(new Date());\nconst hour = parseInt(parts.find(p => p.type === 'hour').value, 10);\nconst minute = parseInt(parts.find(p => p.type === 'minute').value, 10);\nconst minutesNow = hour * 60 + minute;\nconst withinWindow = minutesNow >= Number(cfg.window_start_hour) * 60 && minutesNow < Number(cfg.window_end_hour) * 60;\nconst proceed = sw === 'ON' && withinWindow;\nconst reason = sw !== 'ON'\n  ? `Master switch is ${sw || 'MISSING'} (Settings!A2 must be ON)`\n  : (withinWindow ? 'OK' : `Outside send window (${cfg.window_start_hour}:00-${cfg.window_end_hour}:00 ${cfg.timezone})`);\n\nreturn [{\n  json: {\n    trace,\n    proceed,\n    master_switch: sw || '(not found)',\n    ist_time: `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`,\n    within_window: withinWindow,\n    reason,\n    selected_cities: selected,\n    known_cities: allCities,\n    include_unknown_city: includeUnknown,\n    city_filter_active: selected.length > 0,\n  }\n}];"
+      },
+      "id": "5caec4d7-b9d9-450d-8a57-3e208bccf9d2",
+      "name": "Check Gates: Switch + Time Window",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -896,
+        3792
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c4df222b-1a62-4e9c-b9c9-5342507ef75e",
+              "leftValue": "={{ $json.proceed }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "039aa3c9-535f-4ff9-83f3-2bf5bcb4507c",
+      "name": "Proceed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -656,
+        3792
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "cf56810f-3514-4b5c-8c3e-bd6ba365f599",
+      "name": "Halt (OFF or Outside 10-18 IST)",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        3968
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://sheets.googleapis.com/v4/spreadsheets/{{ $('Workflow Config').first().json.spreadsheet_id }}?fields=sheets(properties(title,sheetId,hidden))",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleSheetsOAuth2Api",
+        "options": {}
+      },
+      "id": "6ab77104-cdf2-48f0-a45e-b5e3faf7c3ba",
+      "name": "List All Sheet Tabs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -416,
+        3680
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bXdlxFH87iXnOisU",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n * Turns the Sheets API metadata into one item per raw data tab.\n * Tabs listed in Workflow Config > excluded_tabs (Settings/Tracker/Log) are skipped.\n * If you later merge everything into a single sheet, this keeps working:\n * just leave one data tab in the spreadsheet.\n */\nconst cfg = $('Workflow Config').first().json;\nconst excluded = String(cfg.excluded_tabs || '')\n  .split(',').map(s => s.trim().toLowerCase()).filter(Boolean);\nconst titles = ($input.first().json.sheets || [])\n  .filter(s => !(s.properties || {}).hidden)\n  .map(s => (s.properties || {}).title)\n  .filter(Boolean);\nconst selected = titles.filter(t => !excluded.includes(t.toLowerCase()));\nreturn selected.map(t => ({ json: { sheetTitle: t } }));"
+      },
+      "id": "373dc261-a9ba-4e02-b518-13e2bbab4c41",
+      "name": "Select Raw Data Tabs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -176,
+        3680
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Config').first().json.spreadsheet_id }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $json.sheetTitle }}"
+        },
+        "options": {}
+      },
+      "id": "82eb9269-2c88-40f7-8237-0193d2c3b6a2",
+      "name": "Read Rows From All Tabs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        64,
+        3680
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bXdlxFH87iXnOisU",
+          "name": "Google Sheets account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Config').first().json.spreadsheet_id }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Workflow Config').first().json.tracker_tab }}",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "4b1f0147-8b0d-4271-aa3e-fc744141a9c2",
+      "name": "Read Tracker State",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        304,
+        3680
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bXdlxFH87iXnOisU",
+          "name": "Google Sheets account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n * Normalizes messy rows from every raw tab into one consistent structure,\n * then overlays saved outreach state from the Tracker tab (matched by email).\n *  - Headers are matched case/space/underscore-insensitively against synonyms\n *  - Empty rows are dropped\n *  - Rows without a valid email address are dropped (per spec)\n *  - Missing optional fields are preserved and flagged in `data_flags`\n *  - Duplicate emails across tabs: first occurrence wins\n */\nconst FIELD_SYNONYMS = {\n  company: ['company', 'companyname', 'org', 'organisation', 'organization', 'employer', 'firm', 'startup'],\n  recruiter_name: ['recruitername', 'recruiter', 'name', 'contactname', 'contact', 'hrname', 'hr', 'person', 'pocname', 'poc', 'fullname', 'contactperson', 'hiringmanager'],\n  email: ['email', 'emailid', 'emailaddress', 'mail', 'mailid', 'contactemail', 'recruiteremail', 'workemail', 'hremail'],\n  job_role: ['jobrole', 'role', 'position', 'jobtitle', 'title', 'designation', 'profile', 'opening', 'vacancy', 'jobposition'],\n  linkedin: ['linkedin', 'linkedinurl', 'linkedinprofile', 'linkedinlink', 'li', 'profileurl'],\n  source: ['source', 'foundvia', 'platform', 'portal', 'via', 'jobboard', 'referral', 'sourcedfrom'],\n  status: ['status', 'outreachstatus', 'mailstatus', 'stage'],\n  mail_count: ['mailcount', 'mailssent', 'emailssent', 'mailno', 'followupcount', 'emailcount', 'count'],\n  last_mail_date: ['lastmaildate', 'lastmail', 'lastsent', 'lastemaildate', 'lastcontacted', 'lastsentdate'],\n  next_mail_date: ['nextmaildate', 'nextmail', 'nextfollowup', 'nextsend', 'followupdate', 'nextsenddate'],\n  reply_status: ['replystatus', 'reply', 'replied', 'response', 'responsestatus'],\n  gmail_thread_id: ['gmailthreadid', 'threadid', 'thread', 'gmailthread'],\n  notes: ['notes', 'note', 'remarks', 'comments', 'comment', 'extra'],\n  city: ['city', 'location', 'joblocation', 'worklocation', 'baselocation', 'place', 'region',\n         'office', 'officelocation', 'hq', 'headquarters', 'basedin', 'area', 'geo', 'citytown'],\n};\nconst TRACKING_FIELDS = ['status', 'mail_count', 'last_mail_date', 'next_mail_date', 'reply_status', 'gmail_thread_id', 'notes'];\nconst OPTIONAL_INFO_FIELDS = ['company', 'recruiter_name', 'job_role', 'linkedin', 'source', 'city'];\nconst EMAIL_RE = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/;\nconst norm = k => String(k).toLowerCase().replace(/[^a-z0-9]/g, '');\n\n// --- Tracker rows (canonical outreach state), keyed by email ---\nconst tracker = {};\nfor (const t of $('Read Tracker State').all()) {\n  const j = t.json || {};\n  const em = String(j.email || '').trim().toLowerCase();\n  if (EMAIL_RE.test(em)) tracker[em] = j;\n}\n\n// --- Raw rows from all tabs ---\nconst tabItems = $('Select Raw Data Tabs').all();\nconst rawItems = $('Read Rows From All Tabs').all();\nconst out = [];\nconst seen = new Set();\n\nfor (const it of rawItems) {\n  const raw = it.json || {};\n  if (raw.error) continue; // a tab failed to read; its error item is skipped, run continues\n\n  // Resolve which tab this row came from (paired item -> tab list)\n  let idx = 0;\n  const p = it.pairedItem;\n  if (typeof p === 'number') idx = p;\n  else if (p && typeof p.item === 'number') idx = p.item;\n  const sourceTab = (tabItems[idx] && tabItems[idx].json.sheetTitle) || 'unknown';\n\n  const rawKeys = Object.keys(raw).filter(k => k !== 'row_number');\n\n  // Drop fully empty rows\n  const hasAnyValue = rawKeys.some(k => raw[k] !== null && raw[k] !== undefined && String(raw[k]).trim() !== '');\n  if (!hasAnyValue) continue;\n\n  // Map raw headers -> canonical fields\n  const byNorm = {};\n  for (const k of rawKeys) { const nk = norm(k); if (!(nk in byNorm)) byNorm[nk] = k; }\n  const used = new Set();\n  const row = {};\n  for (const [field, synonyms] of Object.entries(FIELD_SYNONYMS)) {\n    let val = '';\n    for (const syn of synonyms) {\n      const rk = byNorm[syn];\n      if (rk !== undefined && !used.has(rk)) {\n        const v = raw[rk];\n        if (v !== null && v !== undefined && String(v).trim() !== '') {\n          val = String(v).trim();\n          used.add(rk);\n          break;\n        }\n      }\n    }\n    row[field] = val;\n  }\n\n  // Drop rows with missing/invalid email addresses (per spec)\n  row.email = row.email.toLowerCase();\n  if (!EMAIL_RE.test(row.email)) continue;\n\n  // Dedupe across tabs\n  if (seen.has(row.email)) continue;\n  seen.add(row.email);\n\n  // Overlay Tracker state - Tracker is the source of truth for outreach state\n  const saved = tracker[row.email];\n  if (saved) {\n    for (const f of TRACKING_FIELDS) {\n      const v = saved[f];\n      if (v !== null && v !== undefined && String(v).trim() !== '') row[f] = String(v).trim();\n    }\n  }\n\n  // Defaults + flags: missing fields never break the row, they are just marked\n  const flags = [];\n  for (const f of OPTIONAL_INFO_FIELDS) if (!row[f]) flags.push('missing:' + f);\n  if (!row.status) row.status = 'Pending';\n  if (!row.reply_status) row.reply_status = 'No Reply';\n  const mc = parseInt(row.mail_count, 10);\n  row.mail_count = Number.isFinite(mc) && mc >= 0 ? mc : 0;\n  row.source_tab = sourceTab;\n  row.source_row = (raw.row_number !== undefined && raw.row_number !== null) ? raw.row_number : '';\n  row.data_flags = flags.join(', ');\n\n  out.push({ json: row });\n}\n\nreturn out;"
+      },
+      "id": "99137b5d-3775-45c1-9a23-3b012b373d74",
+      "name": "Normalize & Merge Dataset",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        496,
+        3680
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n * Decides what to do with each contact this run:\n *   send  - mail 1 immediately, or a due follow-up\n *   close - already received max mails -> mark Closed\n *   wait  - follow-up exists but is not due yet\n *   skip  - terminal status, never mail again\n *\n * Follow-up cadence (days after previous mail):\n *   Mail 1 -> +2 days\n *   Mail 2 -> +5 days\n *   Mail 3 -> +9 days\n *   Mail 4 -> +14 days\n *\n * After Mail 5 the row is Closed.\n */\n\nconst cfg = $('Workflow Config').first().json;\n\n// Default follow-up gaps (days)\nlet gaps = {\n  '1': 2,\n  '2': 5,\n  '3': 9,\n  '4': 14,\n};\n\ntry {\n  gaps = JSON.parse(cfg.followup_gap_days);\n} catch (e) {\n  // keep defaults\n}\n\nconst MAX_MAILS = Number(cfg.max_mails) || 5;\n\nconst TERMINAL = [\n  'Closed',\n  'Replied',\n  'Got Reply',\n  'Rejected',\n  'Mail Not Found',\n  'Skipped',\n  'Error'\n];\n\nconst now = Date.now();\n\nreturn $input.all().map(item => {\n\n  const c = { ...item.json };\n\n  const status = String(c.status || 'Pending').trim();\n  const mailCount = Number(c.mail_count) || 0;\n\n  if (TERMINAL.includes(status)) {\n\n    c.action = 'skip';\n    c.action_reason = `Status \"${status}\" is terminal`;\n\n  }\n\n  else if (mailCount >= MAX_MAILS) {\n\n    c.action = 'close';\n    c.action_reason = `Reached maximum of ${MAX_MAILS} mails`;\n\n  }\n\n  else if (mailCount === 0) {\n\n    c.action = 'send';\n    c.action_reason = 'First outreach mail';\n\n  }\n\n  else {\n\n    let due = Date.parse(c.next_mail_date || '');\n\n    if (!Number.isFinite(due)) {\n\n      const last = Date.parse(c.last_mail_date || '');\n\n      const gapDays = Number(gaps[String(mailCount)]) || 2;\n\n      due = Number.isFinite(last)\n        ? last + gapDays * 24 * 60 * 60 * 1000\n        : now;\n\n    }\n\n    if (now >= due) {\n\n      c.action = 'send';\n      c.action_reason = `Follow-up mail ${mailCount + 1} is due`;\n\n    } else {\n\n      c.action = 'wait';\n      c.action_reason = `Next mail due at ${new Date(due).toISOString()}`;\n\n    }\n\n  }\n\n  return {\n    json: c\n  };\n\n});"
+      },
+      "id": "07b202b9-eb0b-4bee-9bb3-78c7e1c0e04c",
+      "name": "Decide Next Action",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        864,
+        3680
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "06a516b2-55a6-4cdd-a056-2341b70a26bd",
+      "name": "Loop Over Contacts",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1024,
+        3680
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n * End-of-run summary. Per-row outcomes are appended to the Log tab.\n */\nconst gates = $('Check Gates: Switch + Time Window').first().json;\nconst normalized = $('Normalize & Merge Dataset').all().length;\nconst decided = $('Decide Next Action').all().map(i => i.json);\nconst counts = {};\nfor (const d of decided) counts[d.action] = (counts[d.action] || 0) + 1;\n\nreturn [{ json: {\n  finished_at: new Date().toISOString(),\n  city_filter_active: gates.city_filter_active === true,\n  selected_cities: gates.selected_cities || [],\n  contacts_after_city_filter: decided.length,\n  contacts_excluded_by_city: normalized - decided.length,\n  contacts_processed: decided.length,\n  planned_actions: counts,\n  note: 'Per-row outcomes are in the Log tab of the spreadsheet.',\n} }];"
+      },
+      "id": "804b88fc-6751-4bad-acac-e780be651f5f",
+      "name": "Run Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1264,
+        3520
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c342bdac-dce8-45e0-9e51-4c91e6a4f302",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "send",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "send"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "33fe091e-24c0-4211-a076-4af58a6bdc71",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "close",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "close"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0a625b88-9fbd-46f6-ab2c-2ad42cf5b962",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "wait",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "wait"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "2334b63c-942a-4329-bfe4-6152173991fd",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "skip",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "skip"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ac5f26e0-ea22-4f3a-8d06-91c4826309f9",
+      "name": "Route Action",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1184,
+        3840
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "df92ac2a-f2aa-4764-a95c-20f5a929bf46",
+              "leftValue": "={{ Number($json.mail_count) > 0 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d71b74a1-d825-4da8-a315-44892827f6f1",
+      "name": "Is Follow-up Mail?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1520,
+        3776
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 5,
+        "filters": {
+          "q": "={{ 'from:' + $json.email + ($json.last_mail_date && !isNaN(Date.parse($json.last_mail_date)) ? ' after:' + Math.floor(Date.parse($json.last_mail_date) / 1000) : '') }}"
+        }
+      },
+      "id": "6c5a0563-0a96-48e5-8d6f-a097ce0f9c99",
+      "name": "Check Gmail For Reply",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1744,
+        3552
+      ],
+      "alwaysOutputData": true,
+      "webhookId": "147a3eaf-3275-44db-969c-69b47b7ea8fd",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "j5tznvTsxZ1Y5xY6",
+          "name": "Gmail account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n * Interprets the Gmail search result.\n * The search looked for any message FROM the contact received after our last mail\n * (covers replies inside the thread and fresh emails from them).\n * If the check itself errored, we do NOT send this run (never risk mailing someone\n * who already replied) - the row is retried on the next run.\n */\nconst contact = $('Loop Over Contacts').first().json;\nconst items = $input.all();\nconst found = items.filter(i => i.json && !i.json.error && (i.json.id || i.json.threadId));\nconst checkFailed = items.some(i => i.json && i.json.error);\nconst replied = found.length > 0;\nlet threadId = contact.gmail_thread_id || '';\nif (replied && found[0].json.threadId) threadId = found[0].json.threadId;\n\nreturn [{ json: {\n  ...contact,\n  replied,\n  check_failed: !replied && checkFailed,\n  gmail_thread_id: threadId,\n  // used by the interview-scheduling branch to pull the full reply text\n  reply_message_id: replied ? (found[0].json.id || '') : '',\n  reply_snippet: replied ? String(found[0].json.snippet || '') : '',\n} }];"
+      },
+      "id": "930a4def-c2a5-41e4-a38d-7087484ad766",
+      "name": "Evaluate Reply Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1984,
+        3552
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "365cedd8-db39-43dd-b2a6-1418013714a7",
+              "leftValue": "={{ $json.replied === true || $json.check_failed === true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "cae450a4-6e86-45be-a6fe-b753814875dd",
+      "name": "Reply Found or Check Failed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2224,
+        3552
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n * Builds the Tracker/Log payload when a reply was detected\n * (or when the reply check failed and sending was skipped as a precaution).\n * Also folds in the outcome of the interview-scheduling branch.\n */\nconst cfg = $('Workflow Config').first().json;\nconst c = $('Detect Interview Intent').first().json;\nconst failed = c.check_failed === true;\n\n// The calendar node only runs on the confident branch - guard the reference.\nlet eventId = '';\nlet eventLink = '';\ntry {\n  const ev = $('Create Interview Calendar Event').first().json;\n  eventId = ev.id || '';\n  eventLink = ev.htmlLink || '';\n} catch (e) { /* no event was created this run */ }\n\nconst calendarNote = eventId\n  ? `Interview event created (${c.event_start})`\n  : (c.interview_intent ? c.interview_parse_result : '');\n\nreturn [{ json: {\n  ...c,\n  status: failed ? c.status : 'Replied',\n  reply_status: failed ? c.reply_status : 'Got Reply',\n  next_mail_date: failed ? (c.next_mail_date || '') : '',\n  calendar_event_id: eventId,\n  calendar_event_link: eventLink,\n  notes: [c.notes, calendarNote, c.interview_notes ? 'Reply: ' + c.interview_notes.slice(0, 400) : '']\n    .filter(Boolean).join(' | ').slice(0, 1000),\n  log_timestamp: new Date().toLocaleString('en-IN', { timeZone: cfg.timezone }),\n  log_mail_number: Number(c.mail_count) || 0,\n  log_result: failed\n    ? 'Reply check failed - send skipped this run (will retry)'\n    : 'Reply detected - follow-ups stopped' + (calendarNote ? ' | ' + calendarNote : ''),\n  log_thread_id: c.gmail_thread_id || '',\n  log_duration_ms: Date.now() - Date.parse(cfg.run_started_at),\n} }];"
+      },
+      "id": "280e009c-4dfa-4508-b888-24edefd064d6",
+      "name": "Prepare Reply Update",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3536,
+        3328
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n * The contact already received all 5 mails -> mark the row Closed.\n */\nconst cfg = $('Workflow Config').first().json;\nconst c = $input.first().json;\n\nreturn [{ json: {\n  ...c,\n  status: 'Closed',\n  next_mail_date: '',\n  log_timestamp: new Date().toLocaleString('en-IN', { timeZone: cfg.timezone }),\n  log_mail_number: Number(c.mail_count) || 0,\n  log_result: 'Sequence complete (5 mails) - marked Closed',\n  log_thread_id: c.gmail_thread_id || '',\n  log_duration_ms: Date.now() - Date.parse(cfg.run_started_at),\n} }];"
+      },
+      "id": "87f6e6dd-07de-48fa-b51a-929ebb47bb9a",
+      "name": "Prepare Close Update",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        4080
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n * Generate Personalized Email (v3)\n * Updated for backend / full-stack / AI-native software roles.\n */\n\nconst cfg = $('Workflow Config').first().json;\nconst c = $input.first().json;\n\nconst clean = v => String(v || '').trim();\n\nconst company = clean(c.company);\nconst role = clean(c.job_role);\nconst source = clean(c.source);\n\nconst previousMails = Number(c.mail_count) || 0;\nconst mailNumber = previousMails + 1;\n\nconst me = clean(cfg.sender_name);\nconst phone = clean(cfg.sender_phone);\nconst linkedin = clean(cfg.sender_portfolio);\nconst headline = clean(cfg.sender_headline);\n\nlet recruiter = clean(c.recruiter_name)\n  .replace(/^(mr|mrs|ms|dr)\\.?\\s+/i, '')\n  .replace(/\\s*\\((.*?)\\)\\s*/g, ' ')\n  .trim();\n\nconst validName =\n  recruiter &&\n  /^[A-Za-z][A-Za-z.'\\- ]+$/.test(recruiter) &&\n  !/^(hr|team|recruiter|talent|careers|admin|info|hiring)$/i.test(recruiter);\n\nconst greeting = validName\n  ? `Hi ${recruiter.split(\" \")[0]},`\n  : company\n      ? `Dear ${company} Hiring Team,`\n      : `Dear Hiring Team,`;\n\nconst roleText = role || \"Software Development / AI Internship\";\n\nconst subjectMap = {\n  1: company\n      ? `Application for ${roleText} at ${company}`\n      : `Application for ${roleText}`,\n  2: company\n      ? `Following up on my application at ${company}`\n      : `Following up on my application`,\n  3: company\n      ? `Checking in regarding my application at ${company}`\n      : `Checking in regarding my application`,\n  4: company\n      ? `Final follow-up regarding my application at ${company}`\n      : `Final follow-up regarding my application`,\n  5: company\n      ? `Last follow-up regarding my application at ${company}`\n      : `Last follow-up regarding my application`\n};\n\nconst subject = subjectMap[mailNumber];\n\nlet body = \"\";\n\nif (mailNumber === 1) {\n\nbody = `${greeting}\n\nI'm Shashwat Verma, a final-year B.Tech student specializing in Artificial Intelligence & Data Science with hands-on experience building production-grade backend systems, AI-powered applications, and full-stack products.\n\nI'm reaching out regarding the ${roleText}${company ? ` opportunity at ${company}` : \"\"}${source ? ` that I found via ${source}` : \"\"}.\n\nThrough my internships, I've gained hands-on experience with:\n\n• Backend Engineering (FastAPI, PostgreSQL, Redis, REST APIs)\n• Full-Stack Development (React, Next.js, TypeScript)\n• Clean Architecture, Domain-Driven Design (DDD), and Hexagonal Architecture\n• AI Agents, RAG Pipelines, and Workflow Automation\n• Docker, Git, and Production Software Development\n\nI'm currently working as a Backend / AI Engineer Intern, where I lead the backend architecture of an AI-native multi-tenant CRM platform.\n\nMy recent responsibilities include:\n\n• Architecting scalable systems using Clean Architecture, DDD, and Hexagonal Architecture\n• Building 20+ FastAPI REST APIs with PostgreSQL and Docker\n• Designing plug-and-play connector modules and AI-powered CRM automation\n• Mentoring teammates while driving backend architectural decisions focused on scalability and maintainability\n\nI'm currently looking for opportunities in Backend Engineering, Full-Stack Development, or AI-native software systems where I can contribute while continuing to learn from experienced engineers.\n\nMy resume is attached for your review.\n\nI would greatly appreciate the opportunity to discuss how I could contribute to your team.\n\nThank you for your time and consideration.\n\nBest regards,\n\n${me}\n${headline}\n${phone}\n${linkedin}`;\n\n} else if (mailNumber === 2) {\n  body = `${greeting}\n\nI hope you're doing well.\n\nI wanted to follow up on my application${company ? ` at ${company}` : \"\"}.\n\nI understand hiring teams are often busy, so I just wanted to check whether my profile has had a chance to be reviewed.\n\nIf helpful, I can share more details about my backend, full-stack, or AI-related project work.\n\nThank you for your time.\n\nBest regards,\n\n${me}\n${phone}`;\n} else if (mailNumber === 3) {\n  body = `${greeting}\n\nJust checking in once again regarding my application.\n\nI'm still very interested in the opportunity and would appreciate any update whenever convenient.\n\nThank you.\n\nBest regards,\n\n${me}\n${phone}`;\n} else if (mailNumber === 4) {\n  body = `${greeting}\n\nI know inboxes get busy, so I wanted to send one final reminder regarding my application.\n\nIf there isn't a suitable opening currently, I'd still appreciate being considered for future opportunities that match my profile.\n\nThank you for your time.\n\nBest regards,\n\n${me}\n${phone}`;\n} else {\n  body = `${greeting}\n\nThis will be my final follow-up regarding my application.\n\nThank you for considering my profile.\n\nIf an opportunity becomes available in the future, I'd be glad to reconnect.\n\nWishing you and your team continued success.\n\nBest regards,\n\n${me}\n${phone}`;\n}\n\nreturn [{\n  json: {\n    ...c,\n    mail_number: mailNumber,\n    subject,\n    body\n  }\n}];"
+      },
+      "id": "84bdf790-fe8d-45c7-88d3-0b7d7be1a6c5",
+      "name": "Generate Personalized Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2512,
+        3792
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1e617eb6-6d60-4573-884b-5921e2afdab1",
+              "leftValue": "={{ Number($json.mail_count) > 0 && String($json.gmail_thread_id || '').trim() !== '' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4ddd8752-9e24-45b0-9c28-c6bd6be0ecb7",
+      "name": "Continue Existing Thread?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3152,
+        3792
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "reply",
+        "threadId": "={{ $json.gmail_thread_id }}",
+        "message": "={{ $json.body }}",
+        "options": {
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {
+                "property": "resume"
+              }
+            ]
+          }
+        }
+      },
+      "id": "94d0f763-6fdf-4b22-92cf-4ab420adbf24",
+      "name": "Send Follow-up (Same Thread)",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3360,
+        3776
+      ],
+      "webhookId": "3f0a6c99-b233-46be-8f80-6e8cbb469db0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "j5tznvTsxZ1Y5xY6",
+          "name": "Gmail account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.body }}",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {
+                "property": "resume"
+              }
+            ]
+          }
+        }
+      },
+      "id": "0c618250-8fa1-4e16-af59-fb1af464cfab",
+      "name": "Send First Email (New Thread)",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3344,
+        4192
+      ],
+      "webhookId": "2622acb3-bcdf-4bdf-b4b6-c656c446bc77",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "j5tznvTsxZ1Y5xY6",
+          "name": "Gmail account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n * A mail was sent successfully: bump the counters, capture the Gmail thread id\n * (so every follow-up stays in the same conversation) and schedule the next mail.\n */\nconst cfg = $('Workflow Config').first().json;\nconst c = $('Generate Personalized Email').first().json;\nconst sent = $input.first().json || {};\nlet gaps = { '1': 2, '2': 1, '3': 1.5, '4': 3 };\ntry { gaps = JSON.parse(cfg.followup_gap_hours); } catch (e) { /* keep defaults */ }\n\nconst newCount = (Number(c.mail_count) || 0) + 1;\nconst maxMails = Number(cfg.max_mails) || 5;\nconst gapH = Number(gaps[String(newCount)]) || 0;\nconst threadId = sent.threadId || c.gmail_thread_id || '';\n\nreturn [{ json: {\n  ...c,\n  mail_count: newCount,\n  status: `Mail ${newCount} Sent`,\n  last_mail_date: new Date().toISOString(),\n  next_mail_date: newCount < maxMails && gapH > 0\n    ? new Date(Date.now() + gapH * 3600 * 1000).toISOString()\n    : '',\n  gmail_thread_id: threadId,\n  log_timestamp: new Date().toLocaleString('en-IN', { timeZone: cfg.timezone }),\n  log_mail_number: newCount,\n  log_result: `Mail ${newCount} sent successfully`,\n  log_thread_id: threadId,\n  log_duration_ms: Date.now() - Date.parse(cfg.run_started_at),\n} }];"
+      },
+      "id": "605b1461-5ecd-45aa-9e74-4282a93f4f6b",
+      "name": "Prepare Send Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3616,
+        3760
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n * A send failed. Classify the error:\n *  - invalid / unknown / unavailable recipient -> status \"Mail Not Found\" (never retried)\n *  - anything else                             -> status \"Error\" (never retried automatically;\n *    clear the status cell in the Tracker tab to re-enable the row)\n */\nconst cfg = $('Workflow Config').first().json;\nconst c = $('Generate Personalized Email').first().json;\nconst errJson = $input.first().json || {};\nconst msg = String(\n  (errJson.error && errJson.error.message) || errJson.error || errJson.message || 'Unknown send error'\n);\nconst NOT_FOUND_RE = /invalid (to|recipient|address)|address (not found|could ?n.t be found)|recipient address|mailbox (unavailable|not found|does not exist|full)|user unknown|no ?such ?user|domain not found|550|553|invalid to header/i;\nconst permanent = NOT_FOUND_RE.test(msg);\n\nreturn [{ json: {\n  ...c,\n  status: permanent ? 'Mail Not Found' : 'Error',\n  next_mail_date: '',\n  notes: [c.notes, `[${new Date().toISOString()}] send failed: ${msg}`.slice(0, 300)]\n    .filter(Boolean).join(' | '),\n  log_timestamp: new Date().toLocaleString('en-IN', { timeZone: cfg.timezone }),\n  log_mail_number: (Number(c.mail_count) || 0) + 1,\n  log_result: (permanent ? 'Mail Not Found: ' : 'Error: ') + msg.slice(0, 200),\n  log_thread_id: c.gmail_thread_id || '',\n  log_duration_ms: Date.now() - Date.parse(cfg.run_started_at),\n} }];"
+      },
+      "id": "85d7f10d-2de0-42c1-8080-3b75d26279f0",
+      "name": "Classify Send Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3632,
+        4208
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "a8e3a9e0-d98d-40ac-8354-88412d65a1af",
+      "name": "Finalize Row Payload",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        4288,
+        4096
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Config').first().json.spreadsheet_id }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Config').first().json.tracker_tab }}"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "company": "={{ $json.company || '' }}",
+            "recruiter_name": "={{ $json.recruiter_name || '' }}",
+            "email": "={{ $json.email }}",
+            "job_role": "={{ $json.job_role || '' }}",
+            "linkedin": "={{ $json.linkedin || '' }}",
+            "source": "={{ $json.source || '' }}",
+            "city": "={{ $json.city || '' }}",
+            "source_tab": "={{ $json.source_tab || '' }}",
+            "status": "={{ $json.status || 'Pending' }}",
+            "mail_count": "={{ Number($json.mail_count) || 0 }}",
+            "last_mail_date": "={{ $json.last_mail_date || '' }}",
+            "next_mail_date": "={{ $json.next_mail_date || '' }}",
+            "reply_status": "={{ $json.reply_status || 'No Reply' }}",
+            "gmail_thread_id": "={{ $json.gmail_thread_id || '' }}",
+            "notes": "={{ $json.notes || '' }}",
+            "data_flags": "={{ $json.data_flags || '' }}"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "076a5e2c-dedb-4837-b13f-b35ae2f5ae5a",
+      "name": "Update Tracker Row",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        4400,
+        3856
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bXdlxFH87iXnOisU",
+          "name": "Google Sheets account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Config').first().json.spreadsheet_id }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Config').first().json.log_tab }}"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "timestamp": "={{ $('Finalize Row Payload').first().json.log_timestamp }}",
+            "company": "={{ $('Finalize Row Payload').first().json.company || '' }}",
+            "email": "={{ $('Finalize Row Payload').first().json.email }}",
+            "mail_number": "={{ $('Finalize Row Payload').first().json.log_mail_number }}",
+            "result": "={{ $('Finalize Row Payload').first().json.log_result }}",
+            "thread_id": "={{ $('Finalize Row Payload').first().json.log_thread_id || '' }}",
+            "duration_ms": "={{ $('Finalize Row Payload').first().json.log_duration_ms }}"
+          },
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "07e1da03-948c-4cf1-902e-5375af31905b",
+      "name": "Append To Log",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        4640,
+        3856
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bXdlxFH87iXnOisU",
+          "name": "Google Sheets account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## 📧 Job Application Email Sequence\n**Flow:** Schedule → ON/OFF gate (Settings!A2) → 10:00–18:00 IST window gate → read ALL raw tabs → normalize & merge with Tracker → per-contact loop: decide → reply-check → send / follow-up in the same Gmail thread → update Tracker → append Log.\n\n**Outreach state lives in the `Tracker` tab** (raw tabs are read-only), so messy source tabs can never break tracking. To adapt later to a single merged sheet, just leave one data tab in the spreadsheet — nothing else changes.",
+        "height": 240,
+        "width": 640,
+        "color": 4
+      },
+      "id": "73576536-1d2b-4671-a6b0-4b588f971dc4",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1616,
+        3472
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## ⚙️ Setup (one time)\n1. Set `spreadsheet_id` in **Workflow Config**.\n2. Attach your **Google Sheets OAuth** credential to the 5 Sheets nodes **and** to `List All Sheet Tabs` (HTTP Request). Attach **Gmail OAuth** to the 3 Gmail nodes.\n3. In the spreadsheet create 3 utility tabs (names must match Workflow Config):\n   - `Settings` → A1: `master_switch`, A2: `ON` (or `OFF`).\n     Then add two more columns on the **same tab** for the city filter —\n     B1: `city`, C1: `enabled`, and one row per city with a real Google Sheets\n     checkbox in column C (*Insert → Tick box*):\n     `Bangalore ☑ | Delhi ☐ | Mumbai ☐ | Hyderabad ☐ | Remote ☐`\n     Optional control row: `include_unknown_city ☐`\n   - `Tracker` → header row:\n     `company | recruiter_name | email | job_role | linkedin | source | source_tab | status | mail_count | last_mail_date | next_mail_date | reply_status | gmail_thread_id | notes | data_flags`\n   - `Log` → header row:\n     `timestamp | company | email | mail_number | result | thread_id | duration_ms`\n4. Every other tab is treated as raw contact data automatically (5–6 tabs supported out of the box).\n5. **New:** add an `Invalid Contacts` tab with headers:\n   `moved_at | company | recruiter_name | email | job_role | source | source_tab | status | reason`\n6. **New:** set `resume_file_path` (path **inside the n8n container**, e.g. mount `./files` → `/files`) plus `sender_name` / `sender_headline` / `sender_phone` / `sender_portfolio` in Workflow Config.\n7. **New:** attach a **Google Calendar OAuth** credential to `Create Interview Calendar Event` and set `calendar_id` (`primary` by default).\n8. Workflow timezone is set to Asia/Kolkata; the send-window check is timezone-safe either way.",
+        "height": 720,
+        "width": 700,
+        "color": 5
+      },
+      "id": "173aa934-3255-461f-942f-226bcee7ea31",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1616,
+        4064
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## ⏱ Cadence & Statuses\nMail 1 → +2h → Mail 2 → +1h → Mail 3 → +1.5h → Mail 4 → +3h → Mail 5 → `Closed`.\nSends happen only 10:00–18:00 IST; follow-ups that fall due outside the window are sent on the next run inside the window.\n\n**Terminal statuses (never mailed again):** Closed, Replied, Got Reply, Rejected, Mail Not Found, Skipped, Error.\n- Set `Rejected` or `Skipped` manually in the Tracker to stop a row anytime.\n- To retry an `Error` row, clear its status cell in the Tracker.",
+        "height": 336,
+        "width": 620,
+        "color": 6
+      },
+      "id": "8a949dfe-50c5-490e-a30e-61cf8fe89bd3",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        4192
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## ✍️ Email Content\n`Generate Personalized Email` now writes a **real** subject + body for every send - no placeholders.\nIt personalizes on `recruiter_name` (professional fallback greeting when missing/generic), `company`, `job_role` and `source`, and varies the tone across mails 1-5.\n\nSender identity comes from **Workflow Config** (`sender_name`, `sender_headline`, `sender_phone`, `sender_portfolio`).\n\nThe resume is attached to **every** mail (first + follow-ups) via `Load Resume File` → `Attach Resume To Email`, binary property `resume`.\n\nTo swap in an LLM later, replace the subject/body construction and keep the output keys `subject` and `body`.",
+        "height": 300,
+        "width": 620,
+        "color": 3
+      },
+      "id": "e4e58e3f-48ba-4791-9eeb-2b651759a581",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2352,
+        4544
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🛟 Resilience\n- Reply check runs before **every** follow-up (Gmail search `from:<contact> after:<last mail>`). If the check itself fails, the send is skipped for that run rather than risking a mail to someone who already replied.\n- Send errors are classified: invalid / unknown / unavailable recipient → `Mail Not Found` (never retried); anything else → `Error`.\n- Sheets read/update/log nodes continue on error, so one bad row or tab cannot kill the whole run.\n- **Invalid recipients are removed from the active flow:** a `Mail Not Found` classification appends the contact to the **`Invalid Contacts`** tab and leaves the Tracker status terminal, so it is never mailed again. (Rows are not hard-deleted - safer, and fully reversible.)",
+        "height": 332,
+        "width": 640,
+        "color": 7
+      },
+      "id": "0cd89fd0-e7dd-4844-bd54-ecd79d156570",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3840,
+        3296
+      ]
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $('Workflow Config').first().json.resume_file_path }}",
+        "options": {
+          "fileName": "={{ $('Workflow Config').first().json.resume_file_name }}",
+          "dataPropertyName": "resume"
+        }
+      },
+      "id": "2326bdbd-b47e-4a3e-b458-f4521bade875",
+      "name": "Load Resume File",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        2736,
+        3792
+      ],
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n * Re-attaches the email JSON (from Generate Personalized Email) to the resume binary\n * loaded by \"Load Resume File\", so the Gmail nodes receive both in one item.\n * Binary property name is `resume` - referenced by both Gmail send nodes.\n */\nconst email = $('Generate Personalized Email').first().json;\nconst item = $input.first();\nconst binary = item.binary || {};\nconst hasResume = !!binary.resume;\n\nreturn [{\n  json: { ...email, resume_attached: hasResume },\n  binary,\n}];"
+      },
+      "id": "a6df492a-4f72-43d5-86ad-c41a9ab9acaa",
+      "name": "Attach Resume To Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2960,
+        3792
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8a9a06f1-10b6-437c-8291-fb41c967ff66",
+              "leftValue": "={{ $json.status === 'Mail Not Found' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0cf09334-d7ba-4d38-b482-01a8e55e0948",
+      "name": "Is Recipient Invalid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3904,
+        4208
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Config').first().json.spreadsheet_id }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Config').first().json.invalid_tab }}"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "b66d498a-0775-4ef8-a622-c09dfec2873c",
+      "name": "Move To Invalid Contacts",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        4080,
+        4416
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bXdlxFH87iXnOisU",
+          "name": "Google Sheets account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.reply_message_id }}",
+        "simple": false,
+        "options": {}
+      },
+      "id": "12a56612-f86d-4739-8989-7859b3af916d",
+      "name": "Fetch Reply Message",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2528,
+        3312
+      ],
+      "alwaysOutputData": true,
+      "webhookId": "588ab2a4-0914-43e4-8aa9-05bb82332f2d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "j5tznvTsxZ1Y5xY6",
+          "name": "Gmail account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n * Decides whether a reply is a genuine interview-scheduling message and, if so,\n * extracts a concrete date + time (Asia/Kolkata).\n *\n * An event is created ONLY when ALL of these hold:\n *   - an interview/scheduling keyword is present\n *   - an unambiguous date was parsed\n *   - an unambiguous time was parsed\n * Anything vaguer is left alone: the reply text is preserved on the row\n * (interview_notes) and no calendar event is created.\n */\nconst cfg = $('Workflow Config').first().json;\nconst base = $('Evaluate Reply Result').first().json;\nconst msg = $input.first().json || {};\n\nconst text = String(\n  msg.text || msg.textPlain || msg.snippet || base.reply_snippet || ''\n).replace(/\\s+/g, ' ').trim();\nconst subject = String(msg.subject || '');\nconst haystack = (subject + ' ' + text).toLowerCase();\n\nconst INTERVIEW_RE = /\\b(interview|schedule[d]?|scheduling|availability|available|slot|call\\b|meeting|meet\\b|discussion round|technical round|hr round|calendar invite|google meet|zoom|teams call)\\b/;\nconst NEGATIVE_RE = /\\b(unfortunately|not (moving|proceeding)|regret|rejected|no longer|position (is )?(closed|filled)|out of office|auto[- ]?reply)\\b/;\nconst hasIntent = INTERVIEW_RE.test(haystack) && !NEGATIVE_RE.test(haystack);\n\nconst MONTHS = { jan:1, feb:2, mar:3, apr:4, may:5, jun:6, jul:7, aug:8, sep:9, sept:9, oct:10, nov:11, dec:12 };\nconst now = new Date();\nlet year = null, month = null, day = null;\n\n// ISO: 2026-08-12\nlet m = text.match(/\\b(20\\d{2})-(\\d{1,2})-(\\d{1,2})\\b/);\nif (m) { year = +m[1]; month = +m[2]; day = +m[3]; }\n// 12 Aug [2026] / 12th August\nif (month === null) {\n  m = text.match(/\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+(jan|feb|mar|apr|may|jun|jul|aug|sept|sep|oct|nov|dec)[a-z]*\\.?\\,?\\s*(20\\d{2})?/i);\n  if (m) { day = +m[1]; month = MONTHS[m[2].toLowerCase()]; year = m[3] ? +m[3] : null; }\n}\n// Aug 12[, 2026]\nif (month === null) {\n  m = text.match(/\\b(jan|feb|mar|apr|may|jun|jul|aug|sept|sep|oct|nov|dec)[a-z]*\\.?\\s+(\\d{1,2})(?:st|nd|rd|th)?\\,?\\s*(20\\d{2})?/i);\n  if (m) { month = MONTHS[m[1].toLowerCase()]; day = +m[2]; year = m[3] ? +m[3] : null; }\n}\n// 12/08/2026 or 12-08-2026 (day-first, Indian convention)\nif (month === null) {\n  m = text.match(/\\b(\\d{1,2})[\\/\\-](\\d{1,2})[\\/\\-](20\\d{2})\\b/);\n  if (m) { day = +m[1]; month = +m[2]; year = +m[3]; }\n}\n\n// Time: 3pm / 3:30 PM / 15:00 hrs\nlet hour = null, minute = 0;\nm = text.match(/\\b(\\d{1,2})(?::(\\d{2}))?\\s*(a\\.?m\\.?|p\\.?m\\.?)\\b/i);\nif (m) {\n  hour = +m[1] % 12;\n  minute = m[2] ? +m[2] : 0;\n  if (/^p/i.test(m[3])) hour += 12;\n} else {\n  m = text.match(/\\b([01]?\\d|2[0-3]):([0-5]\\d)\\s*(?:hrs?|hours)?\\b/);\n  if (m) { hour = +m[1]; minute = +m[2]; }\n}\n\n// Fill in a missing year: assume the next occurrence, never the past\nif (month !== null && day !== null && year === null) {\n  year = now.getUTCFullYear();\n  const probe = Date.UTC(year, month - 1, day) - 5.5 * 3600 * 1000;\n  if (probe < now.getTime() - 3 * 24 * 3600 * 1000) year += 1;\n}\n\nconst dateOk = year !== null && month >= 1 && month <= 12 && day >= 1 && day <= 31;\nconst timeOk = hour !== null && hour >= 0 && hour <= 23;\n\nlet startIso = '', endIso = '';\nif (dateOk && timeOk) {\n  // Asia/Kolkata is a fixed UTC+05:30 offset - no DST to handle\n  const startMs = Date.UTC(year, month - 1, day, hour, minute) - 5.5 * 3600 * 1000;\n  const durMin = Number(cfg.interview_event_duration_min) || 45;\n  startIso = new Date(startMs).toISOString();\n  endIso = new Date(startMs + durMin * 60 * 1000).toISOString();\n}\n\nconst createEvent = hasIntent && dateOk && timeOk;\n\nreturn [{ json: {\n  ...base,\n  interview_intent: hasIntent,\n  create_event: createEvent,\n  event_start: startIso,\n  event_end: endIso,\n  event_title: `Interview - ${base.company || base.email}${base.job_role ? ' (' + base.job_role + ')' : ''}`,\n  interview_notes: text.slice(0, 900),\n  interview_parse_result: createEvent\n    ? `Parsed ${startIso}`\n    : (hasIntent ? 'Interview intent detected but date/time ambiguous - no event created' : 'No interview intent'),\n} }];"
+      },
+      "id": "b2d268dd-33b3-48a9-9ae8-8ef18ae8556a",
+      "name": "Detect Interview Intent",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2768,
+        3312
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ee307715-6f7a-4cb6-ba2f-28ce1fe01c28",
+              "leftValue": "={{ $json.create_event === true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "46cced6c-5d1a-4bd7-8d25-c0288e1e7132",
+      "name": "Interview Scheduling Detected?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3008,
+        3312
+      ]
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Config').first().json.calendar_id }}"
+        },
+        "start": "={{ $json.event_start }}",
+        "end": "={{ $json.event_end }}",
+        "additionalFields": {
+          "attendees": [],
+          "description": "={{ 'Auto-created from recruiter reply.\\n\\nCompany: ' + ($json.company || '-') + '\\nRole: ' + ($json.job_role || '-') + '\\nContact: ' + $json.email + '\\nGmail thread: https://mail.google.com/mail/u/0/#inbox/' + ($json.gmail_thread_id || '') + '\\n\\nReply text:\\n' + ($json.interview_notes || '') }}",
+          "summary": "={{ $json.event_title }}"
+        }
+      },
+      "id": "9d644878-13cc-4f31-bd50-0d60bd8166f8",
+      "name": "Create Interview Calendar Event",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        3280,
+        3296
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9DQumXNvtPf3CZUa",
+          "name": "Google Calendar account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## 📅 Interview Scheduling → Google Calendar\nRuns **only** on the reply branch. `Fetch Reply Message` pulls the full reply text, `Detect Interview Intent` looks for scheduling keywords **and** parses a concrete date + time (IST, UTC+05:30).\n\nAn event is created **only when intent + date + time are all unambiguous**. Rejection/auto-reply wording is filtered out. If anything is vague, no event is created and the reply text is preserved on the row in `notes` / `interview_notes` for manual handling.\n\nNeeds a **Google Calendar OAuth2** credential (same Google account is fine).",
+        "height": 300,
+        "width": 660,
+        "color": 3
+      },
+      "id": "a6fea996-287d-4c85-b6d3-cae170ed6f98",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2464,
+        2960
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n * Apply City Filter\n * Keeps only contacts based in the cities you ticked in the Settings tab.\n *\n *  - Multi-select: tick Bangalore + Delhi and both are processed.\n *  - Nothing is ever deleted. Rows for unticked cities are simply not crawled\n *    or mailed this run; their sheet rows and tracker state are left untouched,\n *    so ticking that city later resumes them exactly where they left off.\n *  - No city ticked at all  -> filter is OFF, every contact passes (safe default).\n *  - Rows whose city is blank/unrecognized are excluded unless you tick the\n *    `include_unknown_city` control row in Settings.\n *\n * Matching is forgiving: case-insensitive, punctuation-insensitive, substring-aware\n * (\"Bengaluru, KA (Hybrid)\" matches Bangalore), and alias-aware via the\n * `city_aliases` map in Workflow Config.\n */\nconst cfg = $('Workflow Config').first().json;\nconst gates = $('Check Gates: Switch + Time Window').first().json;\n\nconst selected = Array.isArray(gates.selected_cities) ? gates.selected_cities : [];\nconst includeUnknown = gates.include_unknown_city === true;\nconst norm = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();\n\nlet aliases = {};\ntry { aliases = JSON.parse(cfg.city_aliases || '{}'); } catch (e) { /* fall back to exact matching */ }\n\n// Build the set of accepted spellings for each ticked city\nconst accepted = [];\nfor (const city of selected) {\n  const canonical = norm(city);\n  const variants = new Set([canonical]);\n  for (const [key, list] of Object.entries(aliases)) {\n    const keyN = norm(key);\n    const listN = (list || []).map(norm);\n    if (keyN === canonical || listN.includes(canonical)) {\n      variants.add(keyN);\n      listN.forEach(v => variants.add(v));\n    }\n  }\n  accepted.push({ label: city, variants: [...variants].filter(Boolean) });\n}\n\nconst kept = [];\nlet excludedCity = 0, excludedUnknown = 0;\n\nfor (const it of $input.all()) {\n  const c = { ...it.json };\n\n  // Filter disabled -> everything passes through untouched\n  if (accepted.length === 0) {\n    c.city_match = 'filter-off';\n    kept.push({ json: c });\n    continue;\n  }\n\n  const rowCity = norm(c.city);\n  if (!rowCity) {\n    // No city column on this sheet, or cell left blank -> can't filter, so pass it through.\n    c.city_match = 'no-city-column';\n    kept.push({ json: c });\n    continue;\n  }\n\n  // A row matches if any accepted spelling appears in its city text (or vice versa)\n  const hit = accepted.find(a => a.variants.some(v =>\n    rowCity === v || rowCity.includes(v) || v.includes(rowCity)\n  ));\n\n  if (hit) {\n    c.city_match = hit.label;\n    kept.push({ json: c });\n  } else if (includeUnknown && !accepted.some(a => a.variants.some(v => rowCity.includes(v)))) {\n    excludedCity++;   // recognized city, just not ticked -> still excluded\n  } else {\n    excludedCity++;\n  }\n}\n\n// Surfaced in the execution log so a silent zero-send run is easy to diagnose\nconsole.log(JSON.stringify({\n  city_filter_active: accepted.length > 0,\n  selected_cities: selected,\n  contacts_in: $input.all().length,\n  contacts_kept: kept.length,\n  excluded_wrong_city: excludedCity,\n  excluded_missing_city: excludedUnknown,\n  include_unknown_city: includeUnknown,\n}));\n\nreturn kept;"
+      },
+      "id": "f1eeb36a-45a2-4418-9c7b-6466c0d5392f",
+      "name": "Apply City Filter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        3680
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📍 City Filter (checkbox, multi-select)\nTicked in the **Settings** tab, column `city` + checkbox column `enabled`. Tick one city or several — Bangalore today, Bangalore + Delhi later.\n\n**Nothing is deleted.** Contacts in unticked cities are just not crawled or mailed this run; their rows and tracker state stay intact, so ticking that city later resumes them mid-sequence.\n\n- **No city ticked → filter off**, everyone passes (safe default).\n- Blank/unrecognized city → excluded, unless you tick the `include_unknown_city` control row.\n- Matching is case/punctuation-insensitive and alias-aware: *Bengaluru, KA (Hybrid)* matches **Bangalore**. Edit `city_aliases` in **Workflow Config** to tune the alias map.\n- Note: this also pauses **follow-ups** for unticked cities — by design.",
+        "height": 400,
+        "width": 660,
+        "color": 6
+      },
+      "id": "502beda2-c424-4cbe-baf3-f1123ac8296a",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        624,
+        4192
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Config').first().json.spreadsheet_id }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Classify Send Error').first().json.source_tab }}"
+        },
+        "startIndex": "={{ Number($('Classify Send Error').first().json.source_row) }}"
+      },
+      "id": "84063908-8ba4-4b91-9b3c-24c84bc09b24",
+      "name": "Delete Bounced Row From Source",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        5696,
+        3632
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bXdlxFH87iXnOisU",
+          "name": "Google Sheets account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d7c0d1e5-e5dd-43f2-8f9d-894dd59e0662",
+              "leftValue": "={{ $('Classify Send Error').first().json.source_row !== '' && !isNaN(Number($('Classify Send Error').first().json.source_row)) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0e35fc79-5398-4d1f-ba89-9c259f90b57a",
+      "name": "Has Source Row?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5456,
+        3552
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🗑 Bounced-contact cleanup\nWhen Gmail reports invalid / not-found / mailbox-unavailable, the contact is:\n1. **Backed up** to the `Invalid Contacts` tab (full row + reason) - durable, reversible.\n2. **Deleted** from its source HR tab by row number (`Delete Bounced Row From Source`).\n\nDeletion uses the row number captured during this run. If two bounces hit the **same** tab in one run, row numbers shift after the first delete - rare, and the backup tab still has the data. The contact is already `Mail Not Found` (terminal) in the Tracker, so it is never mailed again regardless.",
+        "height": 388,
+        "width": 520,
+        "color": 2
+      },
+      "id": "37b872bb-93d8-4fae-914e-9ba10ba65dfc",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        5440,
+        3840
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger (Every 30 min)": {
+      "main": [
+        [
+          {
+            "node": "Workflow Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Config": {
+      "main": [
+        [
+          {
+            "node": "Read Master Switch (Settings!A2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Master Switch (Settings!A2)": {
+      "main": [
+        [
+          {
+            "node": "Check Gates: Switch + Time Window",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Gates: Switch + Time Window": {
+      "main": [
+        [
+          {
+            "node": "Proceed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Proceed?": {
+      "main": [
+        [
+          {
+            "node": "List All Sheet Tabs",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Halt (OFF or Outside 10-18 IST)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List All Sheet Tabs": {
+      "main": [
+        [
+          {
+            "node": "Select Raw Data Tabs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select Raw Data Tabs": {
+      "main": [
+        [
+          {
+            "node": "Read Rows From All Tabs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Rows From All Tabs": {
+      "main": [
+        [
+          {
+            "node": "Read Tracker State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Tracker State": {
+      "main": [
+        [
+          {
+            "node": "Normalize & Merge Dataset",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize & Merge Dataset": {
+      "main": [
+        [
+          {
+            "node": "Apply City Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decide Next Action": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Contacts": {
+      "main": [
+        [
+          {
+            "node": "Run Summary",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Route Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Action": {
+      "main": [
+        [
+          {
+            "node": "Is Follow-up Mail?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Close Update",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Contacts",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Follow-up Mail?": {
+      "main": [
+        [
+          {
+            "node": "Check Gmail For Reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate Personalized Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Gmail For Reply": {
+      "main": [
+        [
+          {
+            "node": "Evaluate Reply Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate Reply Result": {
+      "main": [
+        [
+          {
+            "node": "Reply Found or Check Failed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply Found or Check Failed?": {
+      "main": [
+        [
+          {
+            "node": "Fetch Reply Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate Personalized Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Reply Update": {
+      "main": [
+        [
+          {
+            "node": "Finalize Row Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Close Update": {
+      "main": [
+        [
+          {
+            "node": "Finalize Row Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Personalized Email": {
+      "main": [
+        [
+          {
+            "node": "Load Resume File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Continue Existing Thread?": {
+      "main": [
+        [
+          {
+            "node": "Send Follow-up (Same Thread)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send First Email (New Thread)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Follow-up (Same Thread)": {
+      "main": [
+        [
+          {
+            "node": "Prepare Send Result",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Classify Send Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send First Email (New Thread)": {
+      "main": [
+        [
+          {
+            "node": "Prepare Send Result",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Classify Send Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Send Result": {
+      "main": [
+        [
+          {
+            "node": "Finalize Row Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Send Error": {
+      "main": [
+        [
+          {
+            "node": "Is Recipient Invalid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Finalize Row Payload": {
+      "main": [
+        [
+          {
+            "node": "Update Tracker Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Tracker Row": {
+      "main": [
+        [
+          {
+            "node": "Append To Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append To Log": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Reply Message": {
+      "main": [
+        [
+          {
+            "node": "Detect Interview Intent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect Interview Intent": {
+      "main": [
+        [
+          {
+            "node": "Interview Scheduling Detected?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Interview Scheduling Detected?": {
+      "main": [
+        [
+          {
+            "node": "Create Interview Calendar Event",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Reply Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Interview Calendar Event": {
+      "main": [
+        [
+          {
+            "node": "Prepare Reply Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Resume File": {
+      "main": [
+        [
+          {
+            "node": "Attach Resume To Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach Resume To Email": {
+      "main": [
+        [
+          {
+            "node": "Continue Existing Thread?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Recipient Invalid?": {
+      "main": [
+        [
+          {
+            "node": "Move To Invalid Contacts",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Finalize Row Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move To Invalid Contacts": {
+      "main": [
+        [
+          {
+            "node": "Has Source Row?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apply City Filter": {
+      "main": [
+        [
+          {
+            "node": "Decide Next Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Source Row?": {
+      "main": [
+        [
+          {
+            "node": "Delete Bounced Row From Source",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Finalize Row Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Bounced Row From Source": {
+      "main": [
+        [
+          {
+            "node": "Finalize Row Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "32dcd51a-93c8-4a78-ba8d-0193ad5aa53e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "27724d8a8a18dc9e1f489a9cd147801e65c5bd4a1c1a284daadbe97d29e5cf8d"
+  },
+  "nodeGroups": [],
+  "id": "3lPwNslGihk8Hh8u",
+  "tags": []
+}
