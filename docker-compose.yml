@@ -13,7 +13,8 @@ services:
     environment:
       - TZ=Asia/Kolkata
       - N8N_SECURE_COOKIE=false
-
+
+      - N8N_CUSTOM_EXTENSIONS=/home/node/.n8n/nodes
     volumes:
       - ./n8n_data:/home/node/.n8n
       - ./files:/home/node/.n8n-files
